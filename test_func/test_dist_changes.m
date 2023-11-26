@@ -1,4 +1,4 @@
-function [range_true, range_est] = test_dist_changes(time, source, target_locs, effective_fft_size, doplot)
+function [range_true, range_est] = test_dist_changes(time, source, target_locs, effective_fft_size, doplot) % continuous
   assert(isa(source, 'Element'), 'source must be an Element class');
   if nargin < 5
     doplot = true;

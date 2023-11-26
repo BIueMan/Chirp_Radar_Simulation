@@ -13,10 +13,9 @@ f = 1e11;
 T = 1/f;
 
 f_0 = 76e9;
-f_1 = f_0 + 4e9;
-T_sample =7.031256e-6;
+f_1 = f_0 + 3.4e9;
+T_sample = 7.031256e-6;
 time = 0: T_sample: time_record_end;
-amp = 1;
 chirp_len = 125e-6;
 c = (f_1-f_0)/chirp_len;
 effective_fft_size = 1024*128;
@@ -62,7 +61,14 @@ target_locs = [zeros(size(range)); zeros(size(range)); range].';
 %% test SNR
 repet = 100;
 SNR = 50;
-[range_true, var_error] = test_radar_SNR(time, source, target_locs, effective_fft_size, SNR, repet);
+%[range_true, var_error] = test_radar_SNR(time, source, target_locs, effective_fft_size, SNR, repet);
+
+SNRdb = 10:5:80;
+SNRlin = 10.^(SNRdb./10);
+%SNR = 10:10:400;
+range = 0.02:0.01:0.07;
+target_locs = [zeros(size(range)); zeros(size(range)); range].';
+[range_true, var_error] = test_SNR(time, source, target_locs, effective_fft_size, SNRlin, repet);
 
 % %% SNR
 % range = 0.001:0.001:2;

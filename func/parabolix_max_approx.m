@@ -1,5 +1,12 @@
 % find the maximum from a parabola that is build from 3 point
 function [x_vertex, y_vertex] = parabolix_max_approx(x, y, warn)
+    % Define a persistent variable to track whether the warning has been issued
+    persistent warningIssued;
+    if isempty(warningIssued)
+        warningIssued = false;
+    end
+    
+    % Initialize the variable the first time the function is
     if nargin < 3
         warn = true;  % Display warning by default
     end
@@ -7,8 +14,9 @@ function [x_vertex, y_vertex] = parabolix_max_approx(x, y, warn)
     if size(x, 2) ~= 3 || size(y, 2) ~= 3
         error('Input matrices must be of size m x 3.')
     end
-    if warn && (size(x, 1) == 3 || size(y, 1) == 3)
+    if (~warningIssued) && warn && (size(x, 1) == 3 || size(y, 1) == 3)
         warning('Input matrices is 3x3, make sure they are not fliped')
+        warningIssued = true;
     end
     
     function [A, B, C] = parabola_vertex(x, y)

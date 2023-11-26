@@ -18,7 +18,7 @@ function [range_true, var_error] = test_radar_SNR(time, source, target_locs, eff
     [signal, true_dist_travel] = source.to_locs1_to_locs2(target_locs, source.Locs, time, args_dict);
     signal = squeeze(signal);
     % add SNR
-    noisey_signal = awgn(signal, SNR);
+    noisey_signal = awgn(signal, SNR); % this line is broken. it dont add the SNR like we want
 
     t_signal = source.get_signal(time);
     r_signal = noisey_signal;
@@ -34,7 +34,7 @@ function [range_true, var_error] = test_radar_SNR(time, source, target_locs, eff
   var_error = var(Error);
   
   %% plots
-  if doplot
+  if doplot    
     figure
     plot(range_true, range_est)
     title('one repet')

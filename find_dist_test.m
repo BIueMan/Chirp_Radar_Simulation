@@ -10,7 +10,7 @@ C = physconst('LightSpeed');
 time_transmit_start = -1e-8;
 time_record_end = 7e-4;
 T_sample = 7.031256e-6;
-upsample = 1e-6;
+upsample = 1e-5;
 T = T_sample * upsample;
 time = [time_transmit_start: T: 0, 0: T: time_record_end];
 
@@ -44,6 +44,16 @@ target_properties = 1;
 
 target_locs = [0,0,0.2];
 target = Element(target_locs, NaN, NaN);
+
+figure
+scatter3(target_locs(:,1), target_locs(:,2), target_locs(:,3))
+hold on
+scatter3(source_locs(:,1), source_locs(:,2), source_locs(:,3))
+text(source_locs(1) + 0.1, source_locs(2), source_locs(3), sprintf('(%0.2f, %0.2f, %0.2f)', source_locs(1), source_locs(2), source_locs(3)), 'FontSize', 8);
+text(target_locs(1) + 0.1, target_locs(2), target_locs(3), sprintf('(%0.2f, %0.2f, %0.2f)', target_locs(1), target_locs(2), target_locs(3)), 'FontSize', 8);
+text(source_locs(1) + 0.1, source_locs(2), source_locs(3) + 0.01, 'Source', 'FontSize', 8, 'color', 'r');
+text(target_locs(1) + 0.1, target_locs(2), target_locs(3) + 0.01, 'Target', 'FontSize', 8, 'color', 'b');
+hold off
 %% calculate signal travel, from the first element to the traget and beck
 % source to target
 [signal, dist] = source.to_locs(target_locs, time, target_properties);
@@ -83,9 +93,9 @@ dist_2_est = Find.dist_travel(t_signal_sample, signal_2, c, T_sample, effective_
 error_2 = abs(dist_2_est-dist_2)
 
 %% plot signals and mixed
-% figure
+figure
 % subplot(2,1,1);
-% stft(source.get_signal(time))
+stft(source.get_signal(time))
 % subplot(2,1,2);
 % stft(squeeze(signal(1,1,:)).')
 % figure
@@ -95,6 +105,10 @@ error_2 = abs(dist_2_est-dist_2)
 range = 0.001:0.001:2;
 target_locs = [zeros(size(range)); zeros(size(range)); range].';
 test_dist_changes(time_salmple, source, target_locs, effective_fft_size);
+range = 0.001:0.1:2;
+target_locs = [zeros(size(range)); zeros(size(range)); range].';
+target = Element(target_locs, NaN, NaN);
+test_dist_discrete(time, T_sample, source, target, effective_fft_size);
 
 % %% SNR
 % range = 0.001:0.001:2;
